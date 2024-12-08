@@ -1,11 +1,11 @@
 package com.agrinexus.app;
 
-import com.agrinexus.ui.UserInterface;
-import com.agrinexus.data.LocalDataSource;
-import com.agrinexus.data.DataManager;
-import com.agrinexus.data.Data;
 import com.agrinexus.analysis.AnalysisEngine;
 import com.agrinexus.analysis.Forecast;
+import com.agrinexus.data.Data;
+import com.agrinexus.data.DataManager;
+import com.agrinexus.data.LocalDataSource;
+import com.agrinexus.ui.UserInterface;
 
 public class MainApp {
     private static MainApp appInstance;
