@@ -9,7 +9,6 @@ import com.agrinexus.analysis.Forecast;
 
 public class MainApp {
     private static MainApp appInstance;
-
     public static void main(String[] args) {
         appInstance = new MainApp();
         appInstance.launch();
