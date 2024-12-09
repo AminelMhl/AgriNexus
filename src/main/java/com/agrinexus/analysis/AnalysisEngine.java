@@ -10,4 +10,13 @@ public class AnalysisEngine {
         //forecast model w kol
         return forecast;
     }
+
+    public double correlation(){
+
+        return 0;
+    }
+
+    public static void generateReport(){
+
+    }
 }
