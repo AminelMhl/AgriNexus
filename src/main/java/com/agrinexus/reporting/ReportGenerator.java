@@ -24,7 +24,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 public class ReportGenerator {
  
-    public ChartPanel generateChart(String chartTitle, List<String> categories, List<Number> values) {
+    public static ChartPanel generateChart(String chartTitle, List<String> categories, List<Number> values) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
         for (int i = 0; i < categories.size(); i++) {
@@ -68,7 +68,7 @@ public class ReportGenerator {
     }
 
     @SuppressWarnings("ConvertToTryWithResources")
-    public void exportPDF(String reportTitle, List<String> reportContent, List<String> categories, List<Number> values) {
+    public static void exportPDF(String reportTitle, List<String> reportContent, List<String> categories, List<Number> values) {
         Document document = new Document();
         try {
             PdfWriter.getInstance(document, new FileOutputStream("Reports/"+reportTitle+".pdf"));
