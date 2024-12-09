@@ -10,7 +10,6 @@ import com.agrinexus.ui.UserInterface;
 
 public class MainApp {
     private static MainApp appInstance;
-
     public static void main(String[] args) {
         appInstance = new MainApp();
         appInstance.launch();
