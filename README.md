@@ -78,17 +78,31 @@ AgriNexus is a Java-based agricultural analytics platform that helps farmers and
 
 ```plaintext
 agrinexus/
-├── src/
-│   ├── main/
-│   │   ├── java/
-│   │   │   └── com/agrinexus/
-│   │   │       ├── analytics/
-│   │   │       ├── data/
-│   │   │       ├── ml/
-│   │   │       └── reporting/
-│   │   └── resources/
-│   └── test/
-└── pom.xml
+└── src/
+    └── main/
+        └── java/
+            └── com/agrinexus/
+                ├── analysis/
+                │   ├── AnalysisEngine.java
+                │   └── Forecast.java
+                ├── app/
+                │   └── MainApp.java
+                ├── data/
+                │   ├── Data.java
+                │   ├── DataManager.java
+                │   ├── DataSource.java
+                │   ├── LocalDataSource.java
+                │   └── CloudDataSource.java
+                ├── ml/
+                │   ├── LinearRegression.java
+                │   ├── LogisticRegression.java
+                │   ├── DecisionTreeRegression.java
+                │   └── RandomForestRegression.java
+                ├── reporting/
+                │   └── ReportGenerator.java
+                └── ui/
+                │   └── UserInterface.java
+                └── pom.xml
 
 ```
 
