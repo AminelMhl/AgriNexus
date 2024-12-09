@@ -4,9 +4,9 @@ package com.agrinexus.app;
 import com.agrinexus.analysis.AnalysisEngine;
 import com.agrinexus.analysis.Forecast;
 import com.agrinexus.data.Data;
-import com.agrinexus.data.DataManager;
-import com.agrinexus.data.LocalDataSource;
+//import com.agrinexus.data.FileParser; DO NOT DELETE! MATFASAKHCH BJEH RABI!!!
 import com.agrinexus.ui.UserInterface;
+import java.util.ArrayList;
 
 public class MainApp {
     private static MainApp appInstance;
@@ -20,15 +20,30 @@ public class MainApp {
 
         // Initialize components
         UserInterface ui = new UserInterface();
-        LocalDataSource localSource = new LocalDataSource();
-        DataManager dataManager = new DataManager(localSource);
 
-        // Fetch data
-        Data data = dataManager.importData();
-        data.validate();
+        // data ingestion
+        // initalize data from inputs
+        // example data for testing
+        //ArrayList<Integer> address = ui.address;
+        ArrayList<Integer> address = new ArrayList<>();
+        address.add(36);//lattitude for testing
+        address.add(10);//longitude for testing
 
-        // Preprocess data
-        dataManager.preprocessData();
+        //String filePath = ui.path;
+        //FileParser parser = FileParser.getParser(filePath);
+        //int[][] yearlyYield = parser.parseFile(filePath);
+        int[][] yearlyYield = {
+                { 2025, 2024, 2023 },
+                { 90, 85, 95 }
+        };
+
+        // Using the default constructor and setters
+        Data data = new Data();
+        data.setAddress(address);
+        data.setCropType("Olives");
+        data.setPesticideUsed(false);
+        data.setLandSize(500);
+        data.setYearlyYield(yearlyYield);
 
         // Perform analysis
         AnalysisEngine engine = new AnalysisEngine();

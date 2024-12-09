@@ -49,6 +49,25 @@
             <artifactId>scala-library</artifactId>
             <version>2.13.0</version>
         </dependency>
+
+                <!-- Apache POI for Excel -->
+    <dependency>
+        <groupId>org.apache.poi</groupId>
+        <artifactId>poi-ooxml</artifactId>
+        <version>5.2.3</version>
+    </dependency>
+    <!-- Required for XML schemas -->
+    <dependency>
+        <groupId>org.apache.xmlbeans</groupId>
+        <artifactId>xmlbeans</artifactId>
+        <version>5.1.1</version>
+    </dependency>
+    <!-- Required for commons compress -->
+    <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-compress</artifactId>
+        <version>1.23.0</version>
+    </dependency> 
     </dependencies>
 
     <build>
