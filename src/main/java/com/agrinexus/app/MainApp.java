@@ -1,5 +1,6 @@
 package com.agrinexus.app;
 
+
 import com.agrinexus.analysis.AnalysisEngine;
 import com.agrinexus.analysis.Forecast;
 import com.agrinexus.data.Data;
@@ -9,7 +10,6 @@ import com.agrinexus.ui.UserInterface;
 
 public class MainApp {
     private static MainApp appInstance;
-
     public static void main(String[] args) {
         appInstance = new MainApp();
         appInstance.launch();
