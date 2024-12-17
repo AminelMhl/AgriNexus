@@ -41,7 +41,7 @@ public class Forecast {
             model.trainModel(trainingData, regressionTargets);
             
     }
-    public String getFormula() {
+    public String getFormula(ML_Model model) {
         this.formula = model.getFormula();
         
         return formula.toString();

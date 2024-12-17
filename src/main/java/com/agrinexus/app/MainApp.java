@@ -1,59 +1,60 @@
 package com.agrinexus.app;
 
-
-import java.util.ArrayList;
-
 import com.agrinexus.analysis.AnalysisEngine;
-import com.agrinexus.analysis.Forecast;
-import com.agrinexus.data.Data;
-import com.agrinexus.ui.UserInterface;
+import com.agrinexus.ml.DecisionTreeRegression;
+import com.agrinexus.ml.LinearRegression;
+import com.agrinexus.ml.LogisticRegressionModel;
+import com.agrinexus.ml.ML_Model;
+import com.agrinexus.ml.RandomForestRegression;
 
 public class MainApp {
-    private static MainApp appInstance;
     public static void main(String[] args) {
-        appInstance = new MainApp();
-        appInstance.launch();
-    }
-
-    public void launch() {
-        System.out.println("Launching the AgriNexus Application...");
-
-        // Initialize components
-        UserInterface ui = new UserInterface();
-
-        // data ingestion
-        // initalize data from inputs
-        // example data for testing
-        //ArrayList<Integer> address = ui.address;
-        ArrayList<Integer> address = new ArrayList<>();
-        address.add(36);//lattitude for testing
-        address.add(10);//longitude for testing
-
-        //String filePath = ui.path;
-        //FileParser parser = FileParser.getParser(filePath);
-        //int[][] yearlyYield = parser.parseFile(filePath);
-        int[][] yearlyYield = {
-                { 2025, 2024, 2023 },
-                { 90, 85, 95 }
+        // Sample training data
+        double[][] trainingData = {
+            {1.0, 2.0},
+            {2.0, 4.0},
+            {3.0, 6.0},
+            {4.0, 8.0},
+            {5.0, 10.0}
         };
+        
+        // Targets for regression models
+        double[] regressionTargets = {5.0, 10.0, 15.0, 20.0, 25.0};
 
-        // Using the default constructor and setters
-        Data data = new Data();
-        data.setAddress(address);
-        data.setCropType("Olives");
-        data.setPesticideUsed(false);
-        data.setLandSize(500);
-        data.setYearlyYield(yearlyYield);
+        // Create an instance of AnalysisEngine
+        AnalysisEngine analysisEngine = new AnalysisEngine();
+        
+        // Train models
+        analysisEngine.trainModel(trainingData, regressionTargets);
 
-        // Perform analysis
-        AnalysisEngine engine = new AnalysisEngine();
-        engine.trainModel();
-        Forecast forecast = engine.forecastModel();
+        // Sample test data
+        double[][] testData = {
+            {6.0, 12.0},
+            {7.0, 14.0},
+            {8.0, 16.0}
+        };
+        
+        // Actual values for the test data (for performance evaluation)
+        double[] actualValues = {30.0, 35.0, 40.0}; // Example actual values
 
-        // Display forecast in UI
-        ui.displayGraphs(forecast);
+        // Generate report for Linear Regression
+        ML_Model linearRegressionModel = new LinearRegression();
+        linearRegressionModel.trainModel(trainingData, regressionTargets); // Train the model
+        analysisEngine.generateReport("Linear Regression Report", testData, actualValues, linearRegressionModel);
 
-        // Generate reports
-        ui.generateReports(engine);
+        // Generate report for Random Forest Regression
+        ML_Model randomForestModel = new RandomForestRegression();
+        randomForestModel.trainModel(trainingData, regressionTargets); // Train the model
+        analysisEngine.generateReport("Random Forest Regression Report", testData, actualValues, randomForestModel);
+
+        // Generate report for Decision Tree Regression
+        ML_Model decisionTreeModel = new DecisionTreeRegression();
+        decisionTreeModel.trainModel(trainingData, regressionTargets); // Train the model
+        analysisEngine.generateReport("Decision Tree Regression Report", testData, actualValues, decisionTreeModel);
+
+        // Generate report for Logistic Regression (if applicable)
+        ML_Model logisticRegressionModel = new LogisticRegressionModel();
+        logisticRegressionModel.trainModel(trainingData, regressionTargets); // Train the model
+        analysisEngine.generateReport("Logistic Regression Report", testData, actualValues, logisticRegressionModel);
     }
 }
