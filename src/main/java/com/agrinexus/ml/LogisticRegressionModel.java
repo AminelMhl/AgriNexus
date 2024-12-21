@@ -3,31 +3,50 @@ package com.agrinexus.ml;
 import smile.classification.LogisticRegression;
 import smile.data.DataFrame;
 import smile.data.formula.Formula;
-import smile.data.vector.IntVector;
+import smile.data.vector.DoubleVector;
 
 public class LogisticRegressionModel implements ML_Model {
     private LogisticRegression model;
+    private Formula formula;
 
+    
+
+    // 
     @Override
     public void trainModel(double[][] trainingData, double[] target) {
-        // Convert training data to a Smile DataFrame
-        DataFrame data = DataFrame.of(trainingData, "Feature1", "Feature2");
+    // Step 1: Convert training data into a DataFrame
+    String[] columnNames = new String[trainingData[0].length];
+    for (int i = 0; i < trainingData[0].length; i++) {
+        columnNames[i] = "Feature" + (i + 1); // Feature1, Feature2, ...
+    }
+    DataFrame featureData = DataFrame.of(trainingData, columnNames);
 
-        // Convert target (double[]) to int[] for binary classification (0 or 1)
-        int[] binaryTarget = new int[target.length];
-        for (int i = 0; i < target.length; i++) {
-            binaryTarget[i] = target[i] > 0.5 ? 1 : 0;  // Threshold to create binary labels (0 or 1)
+    // Step 2: Add the target column to the DataFrame
+    DataFrame data = featureData.merge(DoubleVector.of("Target", target));
+
+    // Step 3: Create the formula: Target ~ Feature1 + Feature2 + ...
+    StringBuilder formulaBuilder = new StringBuilder("Target ~ ");
+    for (int i = 0; i < columnNames.length; i++) {
+        formulaBuilder.append(columnNames[i]);
+        if (i < columnNames.length - 1) {
+            formulaBuilder.append(" + ");
         }
+    }
+    formula = Formula.of(formulaBuilder.toString());
 
-        // Add the target column to the DataFrame
-        data = data.merge(IntVector.of("Target", binaryTarget));
+    // Step 4: Train the logistic regression model
+    int[] intTarget = new int[target.length];
+    for (int i = 0; i < target.length; i++) {
+        intTarget[i] = (int) target[i]; // Convert target to integer values
+    }
 
-        // Use a formula to specify the target column for logistic regression
-        Formula formula = Formula.lhs("Target");  // 'lhs' refers to the target column
+    model = LogisticRegression.fit(trainingData, intTarget);
+    System.out.println("Logistic Regression model trained successfully.");
+}
 
-        // Train the logistic regression model
-        model = LogisticRegression.fit(formula, data);
-        System.out.println("Logistic Regression model trained successfully.");
+    @Override
+    public Formula getFormula() {
+        return formula;
     }
 
     @Override
@@ -40,3 +59,7 @@ public class LogisticRegressionModel implements ML_Model {
         return model.predict(input); // Returns 0 or 1
     }
 }
+
+     
+
+        

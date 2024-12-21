@@ -1,12 +1,12 @@
 package com.agrinexus.app;
 
 
+import java.util.ArrayList;
+
 import com.agrinexus.analysis.AnalysisEngine;
 import com.agrinexus.analysis.Forecast;
 import com.agrinexus.data.Data;
-//import com.agrinexus.data.FileParser; DO NOT DELETE! MATFASAKHCH BJEH RABI!!!
 import com.agrinexus.ui.UserInterface;
-import java.util.ArrayList;
 
 public class MainApp {
     private static MainApp appInstance;

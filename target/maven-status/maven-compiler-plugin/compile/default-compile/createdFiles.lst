@@ -1,10 +1,11 @@
 com\agrinexus\data\Data.class
 com\agrinexus\ml\DecisionTreeRegression.class
 com\agrinexus\app\MainApp.class
-com\agrinexus\data\DataManager.class
-com\agrinexus\data\DataSource.class
+com\agrinexus\data\CSVParser.class
+com\agrinexus\data\FileParser.class
+com\agrinexus\data\WeatherDataFetcher.class
 com\agrinexus\ml\LogisticRegressionModel.class
-com\agrinexus\data\CloudDataSource.class
+com\agrinexus\data\ExcelParser.class
 com\agrinexus\reporting\ReportGenerator.class
 com\agrinexus\analysis\AnalysisEngine.class
 com\agrinexus\ml\LinearRegression.class
@@ -12,4 +13,3 @@ com\agrinexus\analysis\Forecast.class
 com\agrinexus\ui\UserInterface.class
 com\agrinexus\ml\ML_Model.class
 com\agrinexus\ml\RandomForestRegression.class
-com\agrinexus\data\LocalDataSource.class
