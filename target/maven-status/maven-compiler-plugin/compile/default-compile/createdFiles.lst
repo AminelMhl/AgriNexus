@@ -2,8 +2,8 @@ com\agrinexus\data\Data.class
 com\agrinexus\ml\DecisionTreeRegression.class
 com\agrinexus\app\MainApp.class
 com\agrinexus\data\DataManager.class
+com\agrinexus\ml\LogisticRegression.class
 com\agrinexus\data\DataSource.class
-com\agrinexus\ml\LogisticRegressionModel.class
 com\agrinexus\data\CloudDataSource.class
 com\agrinexus\reporting\ReportGenerator.class
 com\agrinexus\analysis\AnalysisEngine.class
