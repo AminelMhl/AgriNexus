@@ -7,4 +7,8 @@ public class User {
     public String address;
     public String password;
     public int Id;
+    public int getUserId() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getUserId'");
+    }
 }
