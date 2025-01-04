@@ -282,6 +282,6 @@ public class mainFrame extends JFrame {
 
     public void initalize(User user2) {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'initalize'");
+        
     }
 }

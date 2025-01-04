@@ -9,6 +9,6 @@ public class User {
     public int Id;
     public int getUserId() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getUserId'");
+        return Id;
     }
 }
