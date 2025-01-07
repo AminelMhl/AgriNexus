@@ -1,7 +1,8 @@
-package com.agrinexus.data;
+package com.agrinexus.data.Parsers;
 
 public abstract class FileParser {
-    abstract int[][] parseFile(String filePath) throws Exception; // Method to parse and convert data
+    public abstract double[][] parseFile(String filePath) throws Exception;
+
     public static FileParser getParser(String filePath) {
         if (filePath.endsWith(".csv")) {
             return new CSVParser();

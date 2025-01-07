@@ -101,11 +101,11 @@ public class AnalysisEngine {
         
         // Prepare categories and values for the chart
         List<String> categories = new ArrayList<>();
-        List<Number> values = new ArrayList<>();
+        List<double[]> values = new ArrayList<>();
         
         for (int i = 0; i < predictions.length; i++) {
             categories.add(arrayToString(testData[i]));
-            values.add(predictions[i]);
+            values.add(new double[] {predictions[i]}); // Wrap the prediction in an array
         }
         
         // Export the report to PDF

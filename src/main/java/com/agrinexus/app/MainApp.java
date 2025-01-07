@@ -6,13 +6,14 @@ import com.agrinexus.ml.LinearRegression;
 import com.agrinexus.ml.LogisticRegressionModel;
 import com.agrinexus.ml.ML_Model;
 import com.agrinexus.ml.RandomForestRegression;
-import com.agrinexus.ui.LoginForm;
+import com.agrinexus.ui.Controller;
 
 public class MainApp {
     public static void main(String[] args) {
 
-        LoginForm loginForm = new LoginForm();
-        loginForm.initialize();
+        // controller for UI
+        new Controller();
+
         double[][] trainingData = {
             {1.0, 2.0},
             {2.0, 4.0},
