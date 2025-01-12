@@ -1,16 +1,23 @@
 package com.agrinexus.ui;
-import javax.swing.*;
+
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.event.ActionListener;
+import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 import org.jfree.chart.ChartPanel;
-
-import java.awt.*;
-import java.awt.event.*;
-import java.util.List;
 
 public class GUI {
     private JFrame frame;
     private CardLayout cardLayout;
     private JPanel mainPanel;
+    private YieldDataPanel yieldDataPanel;
 
     public GUI(ActionListener submitAction, ActionListener addFarmAction, ActionListener addFieldAction) {
         frame = new JFrame("Agrinexus");
@@ -22,7 +29,7 @@ public class GUI {
         FarmerInfoPanel farmerInfoPanel = new FarmerInfoPanel(submitAction);
         FarmInfoPanel farmInfoPanel = new FarmInfoPanel(addFarmAction);
         FieldInfoPanel fieldInfoPanel = new FieldInfoPanel(addFieldAction);
-        YieldDataPanel yieldDataPanel = new YieldDataPanel(this);
+        yieldDataPanel = new YieldDataPanel(this);
 
         mainPanel.add(farmerInfoPanel, "Phase1");
         mainPanel.add(farmInfoPanel, "Phase2");
@@ -74,5 +81,9 @@ public class GUI {
 
     public void addFieldInput() {
         ((FieldInfoPanel) mainPanel.getComponent(2)).addFieldInput();
+    }
+
+    public String getSelectedFilePath() {
+        return yieldDataPanel.getSelectedFilePath();
     }
 }
