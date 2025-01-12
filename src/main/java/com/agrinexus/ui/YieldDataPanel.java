@@ -74,16 +74,7 @@ public class YieldDataPanel extends JPanel {
                         AnalysisEngine analysisEngine = new AnalysisEngine();
                         ML_Model linearRegressionModel = new LinearRegression();
                         linearRegressionModel.trainModel(features, targets);
-        
-                        // Generate a report based on the trained model
-                        double[][] testData = {
-                            {2023},
-                            {2024},
-                            {2025}
-                        };
-                        double[] actualValues = { /* Add actual values if available */ };
-                        analysisEngine.generateReport("Yield Prediction Report", testData, actualValues, linearRegressionModel);
-
+                        analysisEngine.generateReport("Yield Prediction Report", features, targets, linearRegressionModel);
                     } catch (Exception ex) {
                         System.out.println(ex);
                     }

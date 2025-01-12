@@ -79,13 +79,13 @@ public class AnalysisEngine {
         return forecast.correlation(model, trainingData, target);
     }
 
-    public void generateReport(String reportTitle, double[][] testData, double[] actualValues, ML_Model model) {
-        double[] predictions = new double[testData.length];        
+    public void generateReport(String reportTitle, double[][] trainingData, double[] regressionTargets, ML_Model model) {
+        double[] predictions = new double[trainingData.length];        
         
-        // Make predictions for each test data point
-        for (int i = 0; i < testData.length; i++) {
-            predictions[i] = model.predict(testData[i]);
-            System.out.println("Predicted value for input " + arrayToString(testData[i]) + ": " + predictions[i]);
+        // Make predictions for each training data point
+        for (int i = 0; i < trainingData.length; i++) {
+            predictions[i] = model.predict(trainingData[i]);
+            System.out.println("Predicted value for input " + arrayToString(trainingData[i]) + ": " + predictions[i]);
         }
         
         // Prepare report content
@@ -96,7 +96,7 @@ public class AnalysisEngine {
         reportContent.add("Predictions: ");
         
         for (int i = 0; i < predictions.length; i++) {
-            reportContent.add("Input: " + arrayToString(testData[i]) + " => Prediction: " + predictions[i]);
+            reportContent.add("Input: " + arrayToString(trainingData[i]) + " => Prediction: " + predictions[i]);
         }
         
         // Prepare categories and values for the chart
@@ -104,7 +104,7 @@ public class AnalysisEngine {
         List<double[]> values = new ArrayList<>();
         
         for (int i = 0; i < predictions.length; i++) {
-            categories.add(arrayToString(testData[i]));
+            categories.add(arrayToString(trainingData[i]));
             values.add(new double[] {predictions[i]}); // Wrap the prediction in an array
         }
         
