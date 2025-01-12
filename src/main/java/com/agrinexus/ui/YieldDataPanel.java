@@ -1,17 +1,21 @@
 package com.agrinexus.ui;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
 import com.agrinexus.analysis.AnalysisEngine;
-import com.agrinexus.analysis.Forecast;
 import com.agrinexus.data.Parsers.FileParser;
-import com.agrinexus.reporting.ReportGenerator;
+import com.agrinexus.ml.LinearRegression;
+import com.agrinexus.ml.ML_Model;
 
 public class YieldDataPanel extends JPanel {
 
@@ -52,19 +56,37 @@ public class YieldDataPanel extends JPanel {
                 String filePath = getSelectedFilePath();
                 if (filePath != null) {
                     FileParser parser = FileParser.getParser(filePath);
-                    //get the data in the uploaded file
-                    try{
+                    // Get the data in the uploaded file
+                    try {
                         double[][] data = parser.parseFile(filePath);
-                        //prints the data in the array for debugging
+                        // Separate features (years) and targets (yields)
+                        double[][] features = new double[data.length][data[0].length - 1];
+                        double[] targets = new double[data.length];
+                        
                         for (int i = 0; i < data.length; i++) {
-                            for (int j = 0; j < data[i].length; j++) {
-                                System.out.print(data[i][j] + " ");
-                            }}
-                    }
-                    catch(Exception ex){
+                            for (int j = 0; j < data[i].length - 1; j++) {
+                                features[i][j] = data[i][j];
+                            }
+                            targets[i] = data[i][data[i].length - 1];
+                        }
+        
+                        // Train the model using the parsed data
+                        AnalysisEngine analysisEngine = new AnalysisEngine();
+                        ML_Model linearRegressionModel = new LinearRegression();
+                        linearRegressionModel.trainModel(features, targets);
+        
+                        // Generate a report based on the trained model
+                        double[][] testData = {
+                            {2023},
+                            {2024},
+                            {2025}
+                        };
+                        double[] actualValues = { /* Add actual values if available */ };
+                        analysisEngine.generateReport("Yield Prediction Report", testData, actualValues, linearRegressionModel);
+
+                    } catch (Exception ex) {
                         System.out.println(ex);
                     }
-
                 }
             }
         });
