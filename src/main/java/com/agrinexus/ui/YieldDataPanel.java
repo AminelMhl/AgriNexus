@@ -5,6 +5,8 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -12,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import org.jfree.chart.ChartPanel;
 
 import com.agrinexus.analysis.AnalysisEngine;
 import com.agrinexus.data.Parsers.FileParser;
@@ -80,6 +84,16 @@ public class YieldDataPanel extends JPanel {
                         String message = reportGenerator.generateReport("Yield Prediction Report", features, targets, linearRegressionModel);
                         JOptionPane.showMessageDialog(null, message, "Report Generation",
                         JOptionPane.INFORMATION_MESSAGE);
+                        List<String> categories = new ArrayList<>();
+                        List<double[]> values = new ArrayList<>();
+                        for (int i = 0; i < targets.length; i++) {
+                            categories.add("Year " + (i + 1));
+                            values.add(new double[] { targets[i] }); // Wrap the target in an array
+                        }
+                        ChartPanel chartPanel = ReportGenerator.generateChart("Yield Prediction Report", categories, values);
+                        add(chartPanel, BorderLayout.CENTER);
+                        revalidate();
+                        repaint();
                     } catch (Exception ex) {
                         System.out.println(ex);
                     }
