@@ -9,6 +9,7 @@ import java.io.File;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -16,6 +17,7 @@ import com.agrinexus.analysis.AnalysisEngine;
 import com.agrinexus.data.Parsers.FileParser;
 import com.agrinexus.ml.LinearRegression;
 import com.agrinexus.ml.ML_Model;
+import com.agrinexus.reporting.ReportGenerator;
 
 public class YieldDataPanel extends JPanel {
 
@@ -62,19 +64,22 @@ public class YieldDataPanel extends JPanel {
                         // Separate features (years) and targets (yields)
                         double[][] features = new double[data.length][data[0].length - 1];
                         double[] targets = new double[data.length];
-                        
+
                         for (int i = 0; i < data.length; i++) {
                             for (int j = 0; j < data[i].length - 1; j++) {
                                 features[i][j] = data[i][j];
                             }
                             targets[i] = data[i][data[i].length - 1];
                         }
-        
+
                         // Train the model using the parsed data
                         AnalysisEngine analysisEngine = new AnalysisEngine();
+                        ReportGenerator reportGenerator = new ReportGenerator();
                         ML_Model linearRegressionModel = new LinearRegression();
                         linearRegressionModel.trainModel(features, targets);
-                        analysisEngine.generateReport("Yield Prediction Report", features, targets, linearRegressionModel);
+                        String message = reportGenerator.generateReport("Yield Prediction Report", features, targets, linearRegressionModel);
+                        JOptionPane.showMessageDialog(null, message, "Report Generation",
+                        JOptionPane.INFORMATION_MESSAGE);
                     } catch (Exception ex) {
                         System.out.println(ex);
                     }

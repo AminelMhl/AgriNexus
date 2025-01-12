@@ -6,6 +6,7 @@ import com.agrinexus.ml.LinearRegression;
 import com.agrinexus.ml.LogisticRegressionModel;
 import com.agrinexus.ml.ML_Model;
 import com.agrinexus.ml.RandomForestRegression;
+import com.agrinexus.reporting.ReportGenerator;
 import com.agrinexus.ui.Controller;
 
 public class MainApp {
@@ -21,6 +22,7 @@ public class MainApp {
         if (trainingData != null && regressionTargets != null) {
             // Create an instance of AnalysisEngine
             AnalysisEngine analysisEngine = new AnalysisEngine();
+            ReportGenerator reportGenerator = new ReportGenerator();
             
             // Train models
             analysisEngine.trainModel(trainingData, regressionTargets);
@@ -28,22 +30,22 @@ public class MainApp {
             // Generate report for Linear Regression
             ML_Model linearRegressionModel = new LinearRegression();
             linearRegressionModel.trainModel(trainingData, regressionTargets); // Train the model
-            analysisEngine.generateReport("Linear Regression Report", trainingData, regressionTargets, linearRegressionModel);
+            reportGenerator.generateReport("Linear Regression Report", trainingData, regressionTargets, linearRegressionModel);
 
             // Generate report for Random Forest Regression
             ML_Model randomForestModel = new RandomForestRegression();
             randomForestModel.trainModel(trainingData, regressionTargets); // Train the model
-            analysisEngine.generateReport("Random Forest Regression Report", trainingData, regressionTargets, randomForestModel);
+            reportGenerator.generateReport("Random Forest Regression Report", trainingData, regressionTargets, randomForestModel);
 
             // Generate report for Decision Tree Regression
             ML_Model decisionTreeModel = new DecisionTreeRegression();
             decisionTreeModel.trainModel(trainingData, regressionTargets); // Train the model
-            analysisEngine.generateReport("Decision Tree Regression Report", trainingData, regressionTargets, decisionTreeModel);
+            reportGenerator.generateReport("Decision Tree Regression Report", trainingData, regressionTargets, decisionTreeModel);
 
             // Generate report for Logistic Regression (if applicable)
             ML_Model logisticRegressionModel = new LogisticRegressionModel();
             logisticRegressionModel.trainModel(trainingData, regressionTargets); // Train the model
-            analysisEngine.generateReport("Logistic Regression Report", trainingData, regressionTargets, logisticRegressionModel);
+            reportGenerator.generateReport("Logistic Regression Report", trainingData, regressionTargets, logisticRegressionModel);
         } else {
             System.out.println("No training data available.");
         }

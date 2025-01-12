@@ -17,7 +17,7 @@ import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.StandardBarPainter;
 import org.jfree.data.category.DefaultCategoryDataset;
 
-import com.agrinexus.ui.GUI;
+import com.agrinexus.ml.ML_Model;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
@@ -25,10 +25,17 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
 public class ReportGenerator {
- 
+    private String arrayToString(double[] array) {
+        StringBuilder sb = new StringBuilder();
+        for (double value : array) {
+            sb.append(value).append(" ");
+        }
+        return sb.toString().trim();
+    }
+
     public static ChartPanel generateChart(String chartTitle, List<String> categories, List<double[]> values) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-    
+
         // Populate dataset with values
         for (int seriesIndex = 0; seriesIndex < values.size(); seriesIndex++) {
             double[] seriesValues = values.get(seriesIndex);
@@ -36,32 +43,32 @@ public class ReportGenerator {
                 dataset.addValue(seriesValues[i], "Series " + (seriesIndex + 1), categories.get(i));
             }
         }
-    
+
         // Create the chart
         JFreeChart chart = ChartFactory.createBarChart(
-                chartTitle,         // Chart title
-                "Category",         // Domain axis label
-                "Value",            // Range axis label
-                dataset             // Data
+                chartTitle, // Chart title
+                "Category", // Domain axis label
+                "Value", // Range axis label
+                dataset // Data
         );
-    
+
         // Customize chart title
         chart.getTitle().setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 18)); // Change title font
         chart.getTitle().setPaint(java.awt.Color.BLUE); // Change title color
-    
+
         // Customize axis labels
         chart.getCategoryPlot().getDomainAxis().setLabelFont(new java.awt.Font("Verdana", java.awt.Font.PLAIN, 14));
         chart.getCategoryPlot().getRangeAxis().setLabelFont(new java.awt.Font("Verdana", java.awt.Font.PLAIN, 14));
-    
+
         // Customize bar color and renderer
         BarRenderer renderer = (BarRenderer) chart.getCategoryPlot().getRenderer();
         renderer.setSeriesPaint(0, Color.decode("#0066CC"));
         renderer.setBarPainter(new StandardBarPainter()); // Use a standard painter (no gradient)
         renderer.setShadowVisible(false);
         renderer.setMaximumBarWidth(0.07);
-    
+
         chart.getCategoryPlot().getDomainAxis().setCategoryMargin(0.05);
-    
+
         // Save chart as JPEG
         try {
             File outputFile = new File("Charts/" + chartTitle + " chart output.jpg");
@@ -70,20 +77,20 @@ public class ReportGenerator {
         } catch (IOException e) {
             System.err.println("Error saving chart as JPEG: " + e.getMessage());
         }
-    
+
         // Create ChartPanel
         ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new java.awt.Dimension(800, 600));
-    
+
         return chartPanel;
     }
-    
 
     @SuppressWarnings("ConvertToTryWithResources")
-    public static void exportPDF(String reportTitle, List<String> reportContent, List<String> categories, List<double[]> values) {
+    public static String exportPDF(String reportTitle, List<String> reportContent, List<String> categories,
+            List<double[]> values) {
         Document document = new Document();
         try {
-            PdfWriter.getInstance(document, new FileOutputStream("Reports/"+reportTitle+".pdf"));
+            PdfWriter.getInstance(document, new FileOutputStream("Reports/" + reportTitle + ".pdf"));
             document.open();
 
             document.add(new Paragraph("Report: " + reportTitle));
@@ -91,7 +98,7 @@ public class ReportGenerator {
             for (String content : reportContent) {
                 document.add(new Paragraph(content));
             }
-                                        
+
             ChartPanel chartPanel = generateChart(reportTitle, categories, values);
             JFreeChart chart = chartPanel.getChart();
 
@@ -109,32 +116,45 @@ public class ReportGenerator {
             document.add(chartImageToAdd);
 
             System.out.println("PDF Report generated successfully!");
+            return "Report generated successfully! \nPDF saved at Reports folder";
         } catch (DocumentException | IOException e) {
             System.err.println("Error generating PDF: " + e.getMessage());
+            return "Error generating PDF: " + e.getMessage();
         } finally {
             document.close();
         }
     }
 
-    public static void generateReport(String reportTitle, List<String> categories, List<double[]> values, GUI gui) {
+    public String generateReport(String reportTitle, double[][] trainingData, double[] regressionTargets,
+            ML_Model model) {
+        double[] predictions = new double[trainingData.length];
+
+        // Make predictions for each training data point
+        for (int i = 0; i < trainingData.length; i++) {
+            predictions[i] = model.predict(trainingData[i]);
+            System.out.println("Predicted value for input " + arrayToString(trainingData[i]) + ": " + predictions[i]);
+        }
+
         // Prepare report content
         List<String> reportContent = new ArrayList<>();
         reportContent.add("Model Performance Report");
         reportContent.add("=========================");
-        reportContent.add("Model: Linear Regression");
-        reportContent.add("Predictions: ");
+        reportContent.add("Model: " + model.getClass().getSimpleName());
+        reportContent.add(
+                "The provided data from the farmer can be analyzed using a linear regression model. In this case, the model can be used to interpret how the yield varies over the years, allowing us to identify trends and predict future yields based on historical data. This relationship highlights the influence of time (year) on agricultural productivity (yield). \n \nThe given chart explains the results \n");
 
-        for (int i = 0; i < values.size(); i++) {
-            reportContent.add("Input: " + categories.get(i) + " => Prediction: " + values.get(i));
+        // Prepare categories and values for the chart
+        List<String> categories = new ArrayList<>();
+        List<double[]> values = new ArrayList<>();
+
+        for (int i = 0; i < predictions.length; i++) {
+            categories.add(arrayToString(trainingData[i]));
+            values.add(new double[] { predictions[i] }); // Wrap the prediction in an array
         }
 
-        // Prepare chart
-        ChartPanel chartPanel = generateChart(reportTitle, categories, values);
-
-        // Display report and chart on GUI
-        gui.displayReport(reportContent, chartPanel);
+        // Export the report to PDF
+        String message = exportPDF(reportTitle, reportContent, categories, values);
+        return message;    
     }
 
-
 }
-

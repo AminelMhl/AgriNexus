@@ -1,14 +1,10 @@
 package com.agrinexus.analysis;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.agrinexus.ml.DecisionTreeRegression;
 import com.agrinexus.ml.LinearRegression;
 import com.agrinexus.ml.LogisticRegressionModel;
 import com.agrinexus.ml.ML_Model;
 import com.agrinexus.ml.RandomForestRegression;
-import com.agrinexus.reporting.ReportGenerator;
 
 import smile.data.formula.Formula;
 
@@ -77,46 +73,5 @@ public class AnalysisEngine {
 
     public double correlation(ML_Model model, double[][] trainingData, double[] target) {
         return forecast.correlation(model, trainingData, target);
-    }
-
-    public void generateReport(String reportTitle, double[][] trainingData, double[] regressionTargets, ML_Model model) {
-        double[] predictions = new double[trainingData.length];        
-        
-        // Make predictions for each training data point
-        for (int i = 0; i < trainingData.length; i++) {
-            predictions[i] = model.predict(trainingData[i]);
-            System.out.println("Predicted value for input " + arrayToString(trainingData[i]) + ": " + predictions[i]);
-        }
-        
-        // Prepare report content
-        List<String> reportContent = new ArrayList<>();
-        reportContent.add("Model Performance Report");
-        reportContent.add("=========================");
-        reportContent.add("Model: " + model.getClass().getSimpleName());
-        reportContent.add("Predictions: ");
-        
-        for (int i = 0; i < predictions.length; i++) {
-            reportContent.add("Input: " + arrayToString(trainingData[i]) + " => Prediction: " + predictions[i]);
-        }
-        
-        // Prepare categories and values for the chart
-        List<String> categories = new ArrayList<>();
-        List<double[]> values = new ArrayList<>();
-        
-        for (int i = 0; i < predictions.length; i++) {
-            categories.add(arrayToString(trainingData[i]));
-            values.add(new double[] {predictions[i]}); // Wrap the prediction in an array
-        }
-        
-        // Export the report to PDF
-        ReportGenerator.exportPDF(reportTitle, reportContent, categories, values);
-    }
-
-    private String arrayToString(double[] array) {
-        StringBuilder sb = new StringBuilder();
-        for (double value : array) {
-            sb.append(value).append(" ");
-        }
-        return sb.toString().trim();
     }
 }
